@@ -155,4 +155,27 @@ public class DAOUsuario extends ConexaoSQLPostgres {
         fecha();
         return true;
     }
+    
+    public boolean alterarUsuario(String login, String senha) throws SQLException{
+        ModelUsuario modelUsuario;
+        String sql = "Select usuarios.login, usuarios.senha from usuarios where usuarios.login = '" + login + "'"
+                + " and usuarios.senha = '"+ senha +"'";
+        pegaConexao();
+        ResultSet resultado = null;
+        PreparedStatement stmt = null;
+        resultado = ExecuteSQL(sql);
+        try{                        
+            while (resultado.next()) {
+                modelUsuario = new ModelUsuario();
+                modelUsuario.setLogin(resultado.getString("login"));
+                modelUsuario.setSenha(resultado.getString("senha"));
+                return true;
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro ao consultar" + erro);
+            return false;
+        }
+        fecha();
+        return false;
+    }
 }

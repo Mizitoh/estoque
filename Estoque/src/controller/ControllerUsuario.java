@@ -37,5 +37,9 @@ public class ControllerUsuario {
     public boolean alterarUsuarioController(int jtfCodigo, String jtfNome, String JtfLogin) throws SQLException {
         return this.daoUsuario.alterarUsuario(jtfCodigo, jtfNome, JtfLogin);
     }
+
+    public boolean validaLogin(String login, String senha) throws SQLException {
+        return this.daoUsuario.alterarUsuario(login, senha);
+    }
     
 }

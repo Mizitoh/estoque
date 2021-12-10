@@ -4,7 +4,12 @@
  */
 package view;
 
+import java.awt.Desktop;
 import java.awt.Toolkit;
+import java.net.URI;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,76 +36,116 @@ public class ViewPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnUsuario = new javax.swing.JButton();
+        btnProduto = new javax.swing.JButton();
+        btnEstoque = new javax.swing.JButton();
+        btnInfo = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuArquivos = new javax.swing.JMenu();
+        jMenuUsuarios = new javax.swing.JMenuItem();
+        jMenuProdutos = new javax.swing.JMenuItem();
+        jMenuEstoque = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Principal");
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/users.png"))); // NOI18N
-        jButton1.setText("Usuário");
-        jPanel1.add(jButton1);
+        btnUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/users.png"))); // NOI18N
+        btnUsuario.setText("Usuário");
+        btnUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsuarioActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnUsuario);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/produtos.png"))); // NOI18N
-        jButton2.setText("Produto");
-        jPanel1.add(jButton2);
+        btnProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/produtos.png"))); // NOI18N
+        btnProduto.setText("Produto");
+        btnProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProdutoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnProduto);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/estoque.png"))); // NOI18N
-        jButton3.setText("Estoque");
-        jPanel1.add(jButton3);
+        btnEstoque.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/estoque.png"))); // NOI18N
+        btnEstoque.setText("Estoque");
+        btnEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEstoqueActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnEstoque);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/info.png"))); // NOI18N
-        jButton4.setText("Sobre");
-        jPanel1.add(jButton4);
+        btnInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/info.png"))); // NOI18N
+        btnInfo.setText("Sobre");
+        btnInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInfoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnInfo);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/sair.png"))); // NOI18N
-        jButton5.setText("Sair");
-        jPanel1.add(jButton5);
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/sair.png"))); // NOI18N
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnSair);
 
         jMenuBar1.setBackground(new java.awt.Color(153, 0, 0));
 
-        jMenu1.setBackground(new java.awt.Color(153, 0, 0));
-        jMenu1.setText("Arquivos");
+        jMenuArquivos.setBackground(new java.awt.Color(153, 0, 0));
+        jMenuArquivos.setText("Arquivos");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem1.setBackground(new java.awt.Color(255, 102, 102));
-        jMenuItem1.setText("Usuário");
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem2.setBackground(new java.awt.Color(255, 102, 102));
-        jMenuItem2.setText("Produtos");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jMenuUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuUsuarios.setBackground(new java.awt.Color(255, 102, 102));
+        jMenuUsuarios.setText("Usuário");
+        jMenuUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jMenuUsuariosActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenuArquivos.add(jMenuUsuarios);
 
-        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem3.setBackground(new java.awt.Color(255, 102, 102));
-        jMenuItem3.setText("Estoque");
-        jMenu1.add(jMenuItem3);
-        jMenu1.add(jSeparator1);
+        jMenuProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuProdutos.setBackground(new java.awt.Color(255, 102, 102));
+        jMenuProdutos.setText("Produtos");
+        jMenuProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuProdutosActionPerformed(evt);
+            }
+        });
+        jMenuArquivos.add(jMenuProdutos);
 
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        jMenuItem4.setBackground(new java.awt.Color(255, 51, 0));
-        jMenuItem4.setText("Sair");
-        jMenu1.add(jMenuItem4);
+        jMenuEstoque.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuEstoque.setBackground(new java.awt.Color(255, 102, 102));
+        jMenuEstoque.setText("Estoque");
+        jMenuEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuEstoqueActionPerformed(evt);
+            }
+        });
+        jMenuArquivos.add(jMenuEstoque);
+        jMenuArquivos.add(jSeparator1);
 
-        jMenuBar1.add(jMenu1);
+        jMenuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuSair.setBackground(new java.awt.Color(255, 51, 0));
+        jMenuSair.setText("Sair");
+        jMenuSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuSairActionPerformed(evt);
+            }
+        });
+        jMenuArquivos.add(jMenuSair);
+
+        jMenuBar1.add(jMenuArquivos);
 
         setJMenuBar(jMenuBar1);
 
@@ -112,15 +157,67 @@ public class ViewPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void jMenuProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuProdutosActionPerformed
+        new ViewProduto().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuProdutosActionPerformed
+
+    private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
+        try {
+            new ViewUsuario().setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }//GEN-LAST:event_btnUsuarioActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
+        String[] args;
+        try{
+            URI link = new URI("www.github.com/Mizitoh");
+            Desktop.getDesktop().browse(link);
+        }catch(Exception erro){
+            System.out.println(erro);
+        }
+    }//GEN-LAST:event_btnInfoActionPerformed
+
+    private void btnProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutoActionPerformed
+        new ViewProduto().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnProdutoActionPerformed
+
+    private void btnEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstoqueActionPerformed
+        new ViewEstoque().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnEstoqueActionPerformed
+
+    private void jMenuUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuUsuariosActionPerformed
+        try {
+            new ViewUsuario().setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }//GEN-LAST:event_jMenuUsuariosActionPerformed
+
+    private void jMenuEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEstoqueActionPerformed
+        new ViewEstoque().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuEstoqueActionPerformed
+
+    private void jMenuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSairActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuSairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,17 +255,17 @@ public class ViewPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JButton btnEstoque;
+    private javax.swing.JButton btnInfo;
+    private javax.swing.JButton btnProduto;
+    private javax.swing.JButton btnSair;
+    private javax.swing.JButton btnUsuario;
+    private javax.swing.JMenu jMenuArquivos;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuEstoque;
+    private javax.swing.JMenuItem jMenuProdutos;
+    private javax.swing.JMenuItem jMenuSair;
+    private javax.swing.JMenuItem jMenuUsuarios;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
