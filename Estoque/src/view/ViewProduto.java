@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Usuario
@@ -15,6 +17,8 @@ public class ViewProduto extends javax.swing.JFrame {
      */
     public ViewProduto() {
         initComponents();
+        setIcon();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -41,6 +45,7 @@ public class ViewProduto extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cadastro de Produtos");
 
         jLabel1.setText("Codigo");
 
@@ -50,6 +55,7 @@ public class ViewProduto extends javax.swing.JFrame {
 
         jLabel3.setText("Valor do Produto");
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/salvar.png"))); // NOI18N
         jButton1.setText("Salvar");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -81,6 +87,7 @@ public class ViewProduto extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(3).setMaxWidth(60);
         }
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/limpar.png"))); // NOI18N
         jButton2.setText("Limpar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,8 +95,10 @@ public class ViewProduto extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/alterar.png"))); // NOI18N
         jButton3.setText("Alterar");
 
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/excluir.png"))); // NOI18N
         jButton4.setText("Excluir");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -135,8 +144,8 @@ public class ViewProduto extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, Short.MAX_VALUE)
@@ -215,4 +224,8 @@ public class ViewProduto extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/botoes/produtos.png")));
+    }
 }

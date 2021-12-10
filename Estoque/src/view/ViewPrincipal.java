@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Usuario
@@ -15,6 +17,8 @@ public class ViewPrincipal extends javax.swing.JFrame {
      */
     public ViewPrincipal() {
         initComponents();
+        setIcon();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -168,4 +172,8 @@ public class ViewPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/botoes/info.png")));
+    }
 }

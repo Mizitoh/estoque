@@ -82,8 +82,8 @@ public class DAOUsuario extends ConexaoSQLPostgres {
             ResultSet resultset = stmt.executeQuery();
             return resultset;
         } catch (SQLException sqlex) {
-            JOptionPane.showMessageDialog(null, "nao foi possivel executar o comando sql, "
-                    + sqlex + ", o sql passado foi " + sql);
+            //JOptionPane.showMessageDialog(null, "nao foi possivel executar o comando sql, "
+            //        + sqlex + ", o sql passado foi " + sql);
         }
         return null;
     }
@@ -95,14 +95,14 @@ public class DAOUsuario extends ConexaoSQLPostgres {
         ResultSet resultado = null;
         PreparedStatement stmt = null;
         
-        String sql = "Select usuarios.id, usuarios.nome, usuarios.login from usuarios";
+        String sql = "Select usuarios.id, usuarios.nome, usuarios.login from usuarios order by id";
         resultado = ExecuteSQL(sql);
         try {
             while (resultado.next()) {
                 modelUsuario = new ModelUsuario();
-                modelUsuario.setId(resultado.getInt("usuarios.id"));
-                modelUsuario.setNome(resultado.getString("usuarios.nome"));
-                modelUsuario.setLogin(resultado.getString("usuarios.login"));
+                modelUsuario.setId(resultado.getInt("id"));
+                modelUsuario.setNome(resultado.getString("nome"));
+                modelUsuario.setLogin(resultado.getString("login"));
                 listaUsuario.add(modelUsuario);
             }
         } catch (SQLException erro) {
@@ -110,5 +110,49 @@ public class DAOUsuario extends ConexaoSQLPostgres {
         }
         fecha();
         return listaUsuario;
+    }
+    
+    public boolean excluirUsuario(int id) throws SQLException{
+        ModelUsuario modelUsuario = new ModelUsuario();
+        pegaConexao();
+        ResultSet stmt = null;
+        
+        String sql = "delete from usuarios where usuarios.id = " + id;
+        stmt = ExecuteSQL(sql);
+        
+        if (stmt != null) {
+            try{
+            stmt.close();
+            } catch (SQLException ex){
+                ex.getMessage();
+                JOptionPane.showInputDialog("erro ao excluir usuario" + ex);
+                System.out.println("DAO.DAOUsuario.excluirUsuario()");
+            }
+        }
+        
+        fecha();
+        return true;
+    }
+    
+    public boolean alterarUsuario(int id, String nome, String login) throws SQLException{
+        ModelUsuario modelUsuario = new ModelUsuario();
+        pegaConexao();
+        ResultSet stmt = null;
+        
+        String sql = "update usuarios set nome = '"+ nome +"', login = '" + login +"' where id = " + id;
+        stmt = ExecuteSQL(sql);
+        
+        
+        if (stmt != null) {
+            try{
+            stmt.close();
+            } catch (SQLException ex){
+                ex.getMessage();
+                JOptionPane.showInputDialog("erro ao alterar usuario" + ex);
+                System.out.println("DAO.DAOUsuario.excluirUsuario()");
+            }
+        }        
+        fecha();
+        return true;
     }
 }

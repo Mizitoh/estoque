@@ -8,6 +8,8 @@ import DAO.DAOUsuario;
 import controller.ControllerUsuario;
 import java.awt.Toolkit;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -22,11 +24,12 @@ public class ViewUsuario extends javax.swing.JFrame {
 
     ModelUsuario modelUsuario = new ModelUsuario();
     ControllerUsuario controllerUsuario = new ControllerUsuario();
+    List<ModelUsuario> listaUsuario = new ArrayList<>();
 
     /**
      * Creates new form ViewUsuario
      */
-    public ViewUsuario() {
+    public ViewUsuario() throws SQLException {
         initComponents();
         setIcon();
         iniciarForm();
@@ -51,15 +54,15 @@ public class ViewUsuario extends javax.swing.JFrame {
         jtfNome = new javax.swing.JTextField();
         jtfLogin = new javax.swing.JTextField();
         jPasswordSenha = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        btnSalvarUsuario = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jtbTabelaUsuarios = new javax.swing.JTable();
+        btnLimparUsuario = new javax.swing.JButton();
+        jbnAlterarUsuario = new javax.swing.JButton();
+        btnExcluirUsuario = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Usuários");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastro de Usuários");
 
         jLabel1.setText("Código");
 
@@ -77,14 +80,15 @@ public class ViewUsuario extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Salvar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/salvar.png"))); // NOI18N
+        btnSalvarUsuario.setText("Salvar");
+        btnSalvarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSalvarUsuarioActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtbTabelaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -103,27 +107,40 @@ public class ViewUsuario extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jtbTabelaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                jtbTabelaUsuariosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(100);
-            jTable1.getColumnModel().getColumn(0).setMaxWidth(100);
+        jScrollPane1.setViewportView(jtbTabelaUsuarios);
+        if (jtbTabelaUsuarios.getColumnModel().getColumnCount() > 0) {
+            jtbTabelaUsuarios.getColumnModel().getColumn(0).setMinWidth(100);
+            jtbTabelaUsuarios.getColumnModel().getColumn(0).setMaxWidth(100);
         }
 
-        jButton2.setText("Limpar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnLimparUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/limpar.png"))); // NOI18N
+        btnLimparUsuario.setText("Limpar");
+        btnLimparUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnLimparUsuarioActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Alterar");
+        jbnAlterarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/alterar.png"))); // NOI18N
+        jbnAlterarUsuario.setText("Alterar");
+        jbnAlterarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbnAlterarUsuarioActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Excluir");
+        btnExcluirUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/excluir.png"))); // NOI18N
+        btnExcluirUsuario.setText("Excluir");
+        btnExcluirUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirUsuarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,7 +149,7 @@ public class ViewUsuario extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSalvarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -151,11 +168,11 @@ public class ViewUsuario extends javax.swing.JFrame {
                             .addComponent(jPasswordSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnLimparUsuario)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
+                        .addComponent(jbnAlterarUsuario)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4)
+                        .addComponent(btnExcluirUsuario)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -175,14 +192,14 @@ public class ViewUsuario extends javax.swing.JFrame {
                     .addComponent(jtfLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPasswordSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnSalvarUsuario)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnLimparUsuario)
+                    .addComponent(jbnAlterarUsuario)
+                    .addComponent(btnExcluirUsuario))
                 .addContainerGap())
         );
 
@@ -206,22 +223,36 @@ public class ViewUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfLoginActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnSalvarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarUsuarioActionPerformed
         modelUsuario = new ModelUsuario();
         modelUsuario.setNome(jtfNome.getText());
         modelUsuario.setLogin(jtfLogin.getText());
         modelUsuario.setSenha(String.valueOf(jPasswordSenha.getPassword()));
 
-        try {
-            if (controllerUsuario.salvarUsuarioController(modelUsuario)) {
-                JOptionPane.showMessageDialog(null, "Cadastro salvo com sucesso!", "OK", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Erro ao cadastrar dados", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ViewUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (jtfLogin.getText() == null || jtfNome.getText() == null || String.valueOf(jPasswordSenha.getPassword()).isEmpty() == true) {
+            JOptionPane.showMessageDialog(null, "Não pode haver campos vazios", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+        } else {
 
+            try {
+                if (controllerUsuario.salvarUsuarioController(modelUsuario)) {
+                    JOptionPane.showMessageDialog(null, "Cadastro salvo com sucesso!" + "\nGrave sua senha, pois não poderá ser alterada!", "OK", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar dados", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                iniciarForm();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            limparForm();
+
+            /* Metodo antigo
+        
         jtfLogin.setText("");
         jtfNome.setText("");
         jPasswordSenha.setText("");
@@ -239,17 +270,70 @@ public class ViewUsuario extends javax.swing.JFrame {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro ao listar" + erro);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+             */
+        }
+    }//GEN-LAST:event_btnSalvarUsuarioActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnLimparUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparUsuarioActionPerformed
         limparForm();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnLimparUsuarioActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        jtfCodigo.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-        jtfNome.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString());
-        jtfLogin.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString());
-    }//GEN-LAST:event_jTable1MouseClicked
+    private void jtbTabelaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbTabelaUsuariosMouseClicked
+        jtfCodigo.setText(jtbTabelaUsuarios.getValueAt(jtbTabelaUsuarios.getSelectedRow(), 0).toString());
+        jtfNome.setText(jtbTabelaUsuarios.getValueAt(jtbTabelaUsuarios.getSelectedRow(), 1).toString());
+        jtfLogin.setText(jtbTabelaUsuarios.getValueAt(jtbTabelaUsuarios.getSelectedRow(), 2).toString());
+    }//GEN-LAST:event_jtbTabelaUsuariosMouseClicked
+
+    private void btnExcluirUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirUsuarioActionPerformed
+        int linha = jtbTabelaUsuarios.getSelectedRow();
+        if (linha < 0) {
+            JOptionPane.showMessageDialog(null, "Selecione o cadastro que será deletado.", "Selecione um cadastro", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Tem certeza de que deseja excluir o cadastro?", "Atenção", dialogButton);
+            if (dialogResult == 0) {
+                try {
+                    if (controllerUsuario.excluirUsuarioController(Integer.parseInt(jtfCodigo.getText()))) {
+                        JOptionPane.showMessageDialog(null, "Cadastro deletado com sucesso!", "OK", JOptionPane.INFORMATION_MESSAGE);
+                        limparForm();
+                        iniciarForm();
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao deletar dados " + ex, "Erro", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(ViewUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Yes option");
+            } else {
+                System.out.println("desistiu de excluir");
+            }
+        }
+    }//GEN-LAST:event_btnExcluirUsuarioActionPerformed
+
+    private void jbnAlterarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbnAlterarUsuarioActionPerformed
+        int linha = jtbTabelaUsuarios.getSelectedRow();
+        if (linha < 0) {
+            JOptionPane.showMessageDialog(null, "Selecione o cadastro que será alterado.", "Selecione um cadastro", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Tem certeza de que deseja alterar o cadastro?", "Atenção", dialogButton);
+            if (dialogResult == 0) {
+                try {
+                    if (controllerUsuario.alterarUsuarioController((Integer.parseInt(jtfCodigo.getText())), jtfNome.getText(), jtfLogin.getText())) {
+                        JOptionPane.showMessageDialog(null, "Cadastro alterado com sucesso!", "OK", JOptionPane.INFORMATION_MESSAGE);
+                        limparForm();
+                        iniciarForm();
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao alterar dados " + ex, "Erro", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(ViewUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Yes option");
+            } else {
+                System.out.println("desistiu de alterar");
+            }
+        }
+    }//GEN-LAST:event_jbnAlterarUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,16 +365,19 @@ public class ViewUsuario extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewUsuario().setVisible(true);
+                try {
+                    new ViewUsuario().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ViewUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnExcluirUsuario;
+    private javax.swing.JButton btnLimparUsuario;
+    private javax.swing.JButton btnSalvarUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -298,7 +385,8 @@ public class ViewUsuario extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordSenha;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbnAlterarUsuario;
+    private javax.swing.JTable jtbTabelaUsuarios;
     private javax.swing.JTextField jtfCodigo;
     private javax.swing.JTextField jtfLogin;
     private javax.swing.JTextField jtfNome;
@@ -308,7 +396,19 @@ public class ViewUsuario extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/users.png")));
     }
 
-    private void iniciarForm() {
+    //Carrega dados na tabela
+    private void iniciarForm() throws SQLException {
+
+        listaUsuario = controllerUsuario.listaUsuario();
+        DefaultTableModel modelo = (DefaultTableModel) jtbTabelaUsuarios.getModel();
+        modelo.setNumRows(0); //limpa linhas da tabela
+
+        for (ModelUsuario modu : listaUsuario) {
+            modelo.addRow(new Object[]{modu.getId(), modu.getNome(), modu.getLogin()});
+        }
+
+        /* Método antigo
+        
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setNumRows(0);
         String sql = "select usuarios.id, usuarios.nome, usuarios.login from usuarios";
@@ -322,6 +422,7 @@ public class ViewUsuario extends javax.swing.JFrame {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro ao listar" + erro);
         }
+         */
     }
 
     private void limparForm() {

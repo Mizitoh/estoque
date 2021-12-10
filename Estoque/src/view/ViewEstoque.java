@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Usuario
@@ -15,6 +17,8 @@ public class ViewEstoque extends javax.swing.JFrame {
      */
     public ViewEstoque() {
         initComponents();
+        setIcon();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -45,6 +49,7 @@ public class ViewEstoque extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gerenciar Estoque");
 
         jLabel1.setText("Tipo de movimentação");
 
@@ -60,10 +65,12 @@ public class ViewEstoque extends javax.swing.JFrame {
 
         jLabel4.setText("Valor");
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/salvar.png"))); // NOI18N
         jButton1.setText("Salvar");
 
         jLabel5.setText("Filtrar Dados da Tabela");
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/pesquisar.png"))); // NOI18N
         jButton2.setText("Pesquisar");
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -81,6 +88,7 @@ public class ViewEstoque extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/relatorio.png"))); // NOI18N
         jButton3.setText("Gerar Relatórios");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -151,7 +159,7 @@ public class ViewEstoque extends javax.swing.JFrame {
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addContainerGap())
         );
@@ -224,4 +232,8 @@ public class ViewEstoque extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/botoes/estoque2.png")));
+    }
 }

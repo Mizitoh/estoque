@@ -6,8 +6,7 @@ package controller;
 
 import DAO.DAOUsuario;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import java.util.List;
 import model.ModelUsuario;
 
 /**
@@ -25,6 +24,18 @@ public class ControllerUsuario {
 	dao.incluir(sql, modelUsuario.getNome(), modelUsuario.getLogin(), modelUsuario.getSenha());
         dao.fecha();
         return true;
+    }
+
+    public List<ModelUsuario> listaUsuario() throws SQLException {
+        return this.daoUsuario.listaUsuarioDAO();
+    }
+
+    public boolean excluirUsuarioController(int jtfCodigo) throws SQLException {
+        return this.daoUsuario.excluirUsuario(jtfCodigo);
+    }
+    
+    public boolean alterarUsuarioController(int jtfCodigo, String jtfNome, String JtfLogin) throws SQLException {
+        return this.daoUsuario.alterarUsuario(jtfCodigo, jtfNome, JtfLogin);
     }
     
 }
