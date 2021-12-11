@@ -93,7 +93,6 @@ public class DAOUsuario extends ConexaoSQLPostgres {
         ModelUsuario modelUsuario = new ModelUsuario();
         pegaConexao();
         ResultSet resultado = null;
-        PreparedStatement stmt = null;
         
         String sql = "Select usuarios.id, usuarios.nome, usuarios.login from usuarios order by id";
         resultado = ExecuteSQL(sql);
@@ -156,7 +155,7 @@ public class DAOUsuario extends ConexaoSQLPostgres {
         return true;
     }
     
-    public boolean alterarUsuario(String login, String senha) throws SQLException{
+    public boolean validaUsuario(String login, String senha) throws SQLException{
         ModelUsuario modelUsuario;
         String sql = "Select usuarios.login, usuarios.senha from usuarios where usuarios.login = '" + login + "'"
                 + " and usuarios.senha = '"+ senha +"'";

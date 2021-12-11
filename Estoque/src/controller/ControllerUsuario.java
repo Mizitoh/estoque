@@ -39,7 +39,7 @@ public class ControllerUsuario {
     }
 
     public boolean validaLogin(String login, String senha) throws SQLException {
-        return this.daoUsuario.alterarUsuario(login, senha);
+        return this.daoUsuario.validaUsuario(login, senha);
     }
     
 }

@@ -4,8 +4,8 @@
  */
 package view;
 
-import DAO.DAOUsuario;
 import controller.ControllerUsuario;
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.sql.*;
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ public class ViewUsuario extends javax.swing.JFrame {
         setIcon();
         iniciarForm();
         setLocationRelativeTo(null);
+        this.jlbVoltar.setForeground(Color.RED);
     }
 
     /**
@@ -60,6 +61,7 @@ public class ViewUsuario extends javax.swing.JFrame {
         btnLimparUsuario = new javax.swing.JButton();
         jbnAlterarUsuario = new javax.swing.JButton();
         btnExcluirUsuario = new javax.swing.JButton();
+        jlbVoltar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Usuários");
@@ -142,6 +144,13 @@ public class ViewUsuario extends javax.swing.JFrame {
             }
         });
 
+        jlbVoltar.setText("Cliquei para voltar para tela principal");
+        jlbVoltar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlbVoltarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -173,7 +182,8 @@ public class ViewUsuario extends javax.swing.JFrame {
                         .addComponent(jbnAlterarUsuario)
                         .addGap(18, 18, 18)
                         .addComponent(btnExcluirUsuario)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jlbVoltar)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -196,10 +206,12 @@ public class ViewUsuario extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLimparUsuario)
-                    .addComponent(jbnAlterarUsuario)
-                    .addComponent(btnExcluirUsuario))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnLimparUsuario)
+                        .addComponent(jbnAlterarUsuario)
+                        .addComponent(btnExcluirUsuario))
+                    .addComponent(jlbVoltar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
@@ -335,6 +347,11 @@ public class ViewUsuario extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jbnAlterarUsuarioActionPerformed
 
+    private void jlbVoltarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbVoltarMouseClicked
+        this.dispose();
+        new ViewPrincipal().setVisible(true);
+    }//GEN-LAST:event_jlbVoltarMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -386,6 +403,7 @@ public class ViewUsuario extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordSenha;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbnAlterarUsuario;
+    private javax.swing.JLabel jlbVoltar;
     private javax.swing.JTable jtbTabelaUsuarios;
     private javax.swing.JTextField jtfCodigo;
     private javax.swing.JTextField jtfLogin;

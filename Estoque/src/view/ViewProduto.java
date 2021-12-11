@@ -4,7 +4,19 @@
  */
 package view;
 
+import controller.ControllerProduto;
+import java.awt.Color;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.ModelProduto;
+import util.Formatador;
 
 /**
  *
@@ -12,13 +24,22 @@ import java.awt.Toolkit;
  */
 public class ViewProduto extends javax.swing.JFrame {
 
+    ModelProduto modelProduto = new ModelProduto();
+    ControllerProduto controllerProduto = new ControllerProduto();
+    List<ModelProduto> listaProduto = new ArrayList<>();
+
     /**
      * Creates new form ViewProduto
      */
-    public ViewProduto() {
+    public ViewProduto() throws SQLException {
         initComponents();
         setIcon();
         setLocationRelativeTo(null);
+        iniciarFormProd();
+        setarJtfValor();
+        this.jLabel4.setForeground(Color.red);
+        Formatador fmt = new Formatador();
+        fmt.converterVirgulaParaPonto(jtfValorProduto.getText());
     }
 
     /**
@@ -32,33 +53,60 @@ public class ViewProduto extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jtfCodigoProduto = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jtdDescricaoProduto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jtfValorProduto = new javax.swing.JTextField();
+        btnSalvarProduto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jTableProduto = new javax.swing.JTable();
+        btnLimparProduto = new javax.swing.JButton();
+        btnAlterarProduto = new javax.swing.JButton();
+        btnExcluirProduto = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Produtos");
 
         jLabel1.setText("Codigo");
 
-        jTextField1.setEditable(false);
+        jtfCodigoProduto.setEditable(false);
 
         jLabel2.setText("Descrição");
 
+        jtdDescricaoProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtdDescricaoProdutoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtdDescricaoProdutoKeyTyped(evt);
+            }
+        });
+
         jLabel3.setText("Valor do Produto");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/salvar.png"))); // NOI18N
-        jButton1.setText("Salvar");
+        jtfValorProduto.setText("0,00");
+        jtfValorProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtfValorProdutoMouseClicked(evt);
+            }
+        });
+        jtfValorProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfValorProdutoKeyPressed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        btnSalvarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/salvar.png"))); // NOI18N
+        btnSalvarProduto.setText("Salvar");
+        btnSalvarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarProdutoActionPerformed(evt);
+            }
+        });
+
+        jTableProduto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -77,29 +125,51 @@ public class ViewProduto extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(80);
-            jTable1.getColumnModel().getColumn(0).setMaxWidth(80);
-            jTable1.getColumnModel().getColumn(2).setMinWidth(60);
-            jTable1.getColumnModel().getColumn(2).setMaxWidth(60);
-            jTable1.getColumnModel().getColumn(3).setMinWidth(60);
-            jTable1.getColumnModel().getColumn(3).setMaxWidth(60);
+        jTableProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableProdutoMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTableProduto);
+        if (jTableProduto.getColumnModel().getColumnCount() > 0) {
+            jTableProduto.getColumnModel().getColumn(0).setMinWidth(80);
+            jTableProduto.getColumnModel().getColumn(0).setMaxWidth(80);
+            jTableProduto.getColumnModel().getColumn(2).setMinWidth(60);
+            jTableProduto.getColumnModel().getColumn(2).setMaxWidth(60);
+            jTableProduto.getColumnModel().getColumn(3).setMinWidth(60);
+            jTableProduto.getColumnModel().getColumn(3).setMaxWidth(60);
         }
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/limpar.png"))); // NOI18N
-        jButton2.setText("Limpar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnLimparProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/limpar.png"))); // NOI18N
+        btnLimparProduto.setText("Limpar");
+        btnLimparProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnLimparProdutoActionPerformed(evt);
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/alterar.png"))); // NOI18N
-        jButton3.setText("Alterar");
+        btnAlterarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/alterar.png"))); // NOI18N
+        btnAlterarProduto.setText("Alterar");
+        btnAlterarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarProdutoActionPerformed(evt);
+            }
+        });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/excluir.png"))); // NOI18N
-        jButton4.setText("Excluir");
+        btnExcluirProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/botoes/excluir.png"))); // NOI18N
+        btnExcluirProduto.setText("Excluir");
+        btnExcluirProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirProdutoActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Clique para voltar a tela principal");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -108,27 +178,28 @@ public class ViewProduto extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSalvarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jtfCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtdDescricaoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-                            .addComponent(jTextField3)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jtfValorProduto)))
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnLimparProduto)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
+                        .addComponent(btnAlterarProduto)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(btnExcluirProduto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addComponent(jLabel4)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -141,18 +212,20 @@ public class ViewProduto extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtdDescricaoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSalvarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnLimparProduto)
+                        .addComponent(btnAlterarProduto)
+                        .addComponent(btnExcluirProduto))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
@@ -170,9 +243,122 @@ public class ViewProduto extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    
+    private void btnLimparProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparProdutoActionPerformed
+        limparForm();
+    }//GEN-LAST:event_btnLimparProdutoActionPerformed
+
+    private void btnSalvarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarProdutoActionPerformed
+        modelProduto = new model.ModelProduto();
+        modelProduto.setDescricao(jtdDescricaoProduto.getText());
+        modelProduto.setValor(new Formatador().converterVirgulaParaPonto(jtfValorProduto.getText()));
+        modelProduto.setQuantidade(0);
+
+        System.out.print(jtfValorProduto);
+        System.out.println(jtdDescricaoProduto);
+
+        if (new Formatador().converterVirgulaParaPonto(jtfValorProduto.getText()) <= 0 || jtdDescricaoProduto.getText() == null) {
+            JOptionPane.showMessageDialog(null, "Não pode haver campos vazios ou valores menor que zero.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            if (controllerProduto.salvarProdutoController(modelProduto)) {
+                JOptionPane.showMessageDialog(null, "Produto salvo com sucesso!", "OK", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao cadastrar dados", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+
+            try {
+                iniciarFormProd();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            limparForm();
+        }
+    }//GEN-LAST:event_btnSalvarProdutoActionPerformed
+
+    private void btnAlterarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarProdutoActionPerformed
+        int linha = jTableProduto.getSelectedRow();
+        if (linha < 0) {
+            JOptionPane.showMessageDialog(null, "Selecione o cadastro que será alterado.", "Selecione um cadastro", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Tem certeza de que deseja alterar o cadastro?", "Atenção", dialogButton);
+            if (dialogResult == 0) {
+                try {
+                    modelProduto = new model.ModelProduto();
+                    modelProduto.setId(Integer.parseInt(jtfCodigoProduto.getText()));
+                    modelProduto.setDescricao(jtdDescricaoProduto.getText());
+                    modelProduto.setValor(Double.parseDouble(jtfValorProduto.getText()));
+                    modelProduto.setQuantidade(0);
+                    if (controllerProduto.atualizarProdutoController(modelProduto)) {
+                        JOptionPane.showMessageDialog(null, "Cadastro alterado com sucesso!", "OK", JOptionPane.INFORMATION_MESSAGE);
+                        limparForm();
+                        iniciarFormProd();
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao alterar dados " + ex, "Erro", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(ViewUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Yes option");
+            } else {
+                System.out.println("desistiu de alterar");
+            }
+        }
+    }//GEN-LAST:event_btnAlterarProdutoActionPerformed
+
+    private void jTableProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProdutoMouseClicked
+        jtfCodigoProduto.setText(jTableProduto.getValueAt(jTableProduto.getSelectedRow(), 0).toString());
+        jtdDescricaoProduto.setText(jTableProduto.getValueAt(jTableProduto.getSelectedRow(), 1).toString());
+        modelProduto.setQuantidade(0);
+        jtfValorProduto.setText(jTableProduto.getValueAt(jTableProduto.getSelectedRow(), 3).toString());
+    }//GEN-LAST:event_jTableProdutoMouseClicked
+
+    private void btnExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirProdutoActionPerformed
+        int linha = jTableProduto.getSelectedRow();
+        if (linha < 0) {
+            JOptionPane.showMessageDialog(null, "Selecione o cadastro que será deletado.", "Selecione um cadastro", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Tem certeza de que deseja excluir o cadastro?", "Atenção", dialogButton);
+            if (dialogResult == 0) {
+                try {
+                    if (controllerProduto.excluirProdutoController(Integer.parseInt(jtfCodigoProduto.getText()))) {
+                        JOptionPane.showMessageDialog(null, "Cadastro deletado com sucesso!", "OK", JOptionPane.INFORMATION_MESSAGE);
+                        limparForm();
+                        iniciarFormProd();
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao deletar dados " + ex, "Erro", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(ViewUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Yes option");
+            } else {
+                System.out.println("desistiu de excluir");
+            }
+        }
+    }//GEN-LAST:event_btnExcluirProdutoActionPerformed
+
+    private void jtfValorProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfValorProdutoMouseClicked
+        jtfValorProduto.selectAll();
+    }//GEN-LAST:event_jtfValorProdutoMouseClicked
+
+    private void jtfValorProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfValorProdutoKeyPressed
+     
+    }//GEN-LAST:event_jtfValorProdutoKeyPressed
+
+    private void jtdDescricaoProdutoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtdDescricaoProdutoKeyTyped
+       
+    }//GEN-LAST:event_jtdDescricaoProdutoKeyTyped
+
+    private void jtdDescricaoProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtdDescricaoProdutoKeyReleased
+         
+    }//GEN-LAST:event_jtdDescricaoProdutoKeyReleased
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        this.dispose();
+        new ViewPrincipal().setVisible(true);
+    }//GEN-LAST:event_jLabel4MouseClicked
 
     /**
      * @param args the command line arguments
@@ -204,28 +390,55 @@ public class ViewProduto extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewProduto().setVisible(true);
+                try {
+                    new ViewProduto().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ViewProduto.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnAlterarProduto;
+    private javax.swing.JButton btnExcluirProduto;
+    private javax.swing.JButton btnLimparProduto;
+    private javax.swing.JButton btnSalvarProduto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTable jTableProduto;
+    private javax.swing.JTextField jtdDescricaoProduto;
+    private javax.swing.JTextField jtfCodigoProduto;
+    private javax.swing.JTextField jtfValorProduto;
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/botoes/produtos.png")));
     }
+
+    private void iniciarFormProd() throws SQLException {
+
+        listaProduto = controllerProduto.getListaProdutoController();
+        DefaultTableModel modelo = (DefaultTableModel) jTableProduto.getModel();
+        modelo.setNumRows(0); //limpa linhas da tabela
+
+        for (ModelProduto modu : listaProduto) {
+            modelo.addRow(new Object[]{modu.getId(), modu.getDescricao(), modu.getQuantidade(), String.format("%.2f",modu.getValor())});
+        }
+    }
+
+    private void limparForm() {
+        jtdDescricaoProduto.setText("");
+        jtfValorProduto.setText("");
+        jtfCodigoProduto.setText("");
+    }
+
+    private void setarJtfValor() {
+       jtfValorProduto.selectAll();
+    }
+    
 }
